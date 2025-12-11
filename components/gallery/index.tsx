@@ -69,7 +69,7 @@ const Gallery: React.FC<GalleryProps> = ({ images, selectedColorId, onColorChang
         opts={{ loop: true, align: "start", skipSnaps: false }}
       >
         <CarouselContent>
-          {displayImages.map((image, idx) => (
+          {displayImages.map((image) => (
             <CarouselItem key={image.id}>
               <div className="p-1">
                 <div className="relative aspect-square overflow-hidden rounded-lg">

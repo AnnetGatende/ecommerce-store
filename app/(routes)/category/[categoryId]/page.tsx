@@ -29,8 +29,8 @@ const CategoryPage = async ({ params, searchParams }: CategoryPageProps) => {
 
     const products = await getProducts({
         categoryId,
-        colorId: "",
-        sizeId: "",
+        colorId: colorId ?? "",
+        sizeId: sizeId ?? "",
     });
 
     const category = await getCategory(categoryId);
