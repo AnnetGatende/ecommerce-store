@@ -24,9 +24,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const clerkPublishableKey =
-    process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || "test_pk_placeholder";
-  const clerkMissing = clerkPublishableKey === "test_pk_placeholder";
+  const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  const clerkMissing = !clerkPublishableKey;
 
   const content = (
     <ProductProvider>
@@ -62,16 +61,23 @@ export default function RootLayout({
     </ProductProvider>
   );
 
-  return (
-    <ClerkProvider publishableKey={clerkPublishableKey}>
-      {clerkMissing && (
+  if (clerkMissing) {
+    // Build-safe: render without Clerk if no publishable key is provided
+    return (
+      <>
         <script
           dangerouslySetInnerHTML={{
             __html:
-              'console.warn("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY missing; using placeholder provider for build.")',
+              'console.warn("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY missing; rendering without ClerkProvider.")',
           }}
         />
-      )}
+        {content}
+      </>
+    );
+  }
+
+  return (
+    <ClerkProvider publishableKey={clerkPublishableKey}>
       {content}
     </ClerkProvider>
   );
